@@ -45,7 +45,8 @@ const display = function(list) {
       listSize++;
       currNode = currNode.next
     };
-    return `The size of the list is ${listSize}.`;
+    console.log(`The size of the list is ${listSize}.`);
+    return listSize;
   };
   console.log(size(SLL));
   
@@ -154,7 +155,75 @@ const middle = function(list) {
     return `The middle item is ${currNode.value}.`
   };
   console.log(middle(SLL));
-  
+
 //Cycle in a list
+const listWithCycle = new LinkedList();
+listWithCycle.insertFirst('Five');
+listWithCycle.insertFirst('Four');
+listWithCycle.insertFirst('Three');
+listWithCycle.insertFirst('Two');
+listWithCycle.insertFirst('One');
+let cycleNode = listWithCycle.head.next.next.next;
+cycleNode.next = listWithCycle.head;
+console.log(cycleNode);
+
+const cycle = function(list) {
+  if (list.head === null) {
+    console.log('no list!');
+    return;
+  };
+  let fastPointer = list.head.next;
+  if (fastPointer === null) {
+    return 'No cycle!';
+  };
+  let slowPointer = list.head;
+  while (fastPointer !== slowPointer) {
+    if (fastPointer.next === null) {
+      return 'No cycle!';
+    };
+    fastPointer = fastPointer.next;
+    if (fastPointer.next ===null) {
+      return 'No cycle!';
+    };
+    fastPointer = fastPointer.next;
+    slowPointer = slowPointer.next;
+  }
+  return `There's a cycle! Everybody panic!`;
+};
+console.log(cycle(listWithCycle));
 
 //Sorting a list
+const listToSort = new LinkedList();
+listToSort.insertFirst(1);
+listToSort.insertFirst(7);
+listToSort.insertFirst(5);
+listToSort.insertFirst(2);
+listToSort.insertFirst(3);
+console.log(display(listToSort));
+const sortLinkedList = function(list) {
+  if (list.head === null) {
+    console.log('no list!');
+    return;
+  };
+  let listSize = size(listToSort);
+  let currNode = list.head;
+  let min = currNode.value;
+  let count = 0;
+  let added = 0;
+  while (count < listSize) {
+    for (let i = 0; i < listSize - added; i++) {
+      if (currNode.value < min) {
+        min = currNode.value;
+      };
+      currNode = currNode.next;
+    };
+    listToSort.remove(min);
+    listToSort.insertLast(min);
+    count++;
+    added++;
+    currNode = list.head;
+    min = currNode.value;
+  }
+  return list;
+};
+console.log(display(sortLinkedList(listToSort)));
